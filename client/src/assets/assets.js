@@ -21,7 +21,7 @@ import closeMenu from './closeMenu.svg'
 import guestsIcon from './guestsIcon.svg'
 import roomImg1 from './roomImg1.png'
 import roomImgIn from './roomImgIn.png'
-import roomImgnew from './roomImgnew.jpg'
+//import roomImgnew from './roomImgnew.jpg'
 import roomImg2 from './roomImg2.png'
 import roomImg3 from './roomImg3.png'
 import roomImg4 from './roomImg4.png'
@@ -131,7 +131,7 @@ export const roomsDummyData = [
         "hotel": ExecutiveData,
         "roomType": "DOUBLE DELUXE",
         "pricePerNight": 350,
-        "images": [roomImg1, roomImgIn, roomImgnew],
+        "images": [roomImg1, roomImgIn],
         "isAvailable": true,
         "createdAt": "2025-04-10T06:26:04.013Z",
         "updatedAt": "2025-04-10T06:26:04.013Z",
