@@ -54,7 +54,7 @@ const Footer = () => {
           <p className="font-playfair text-lg text-gray-800">ADDRESS</p>
           <ul className="mt-3 text-sm flex flex-col gap-2">
             <li>GS-0073-4900</li>
-            <li>Wejia-Gbawe,Accra</li>
+            <li>Weija-Gbawe,Accra</li>
             <li>Ghana</li>
             <li>West Africa</li>
           </ul>
