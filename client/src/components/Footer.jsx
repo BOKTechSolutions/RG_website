@@ -16,17 +16,6 @@ const Footer = () => {
             Discover the exceptional comfort and elegance of Royal George
             Guesthouse, your perfect retreat for a luxurious stay in Ghana.
           </p>
-          <div className="flex gap-3 mt-4">
-            <a href="#">
-              <img src={assets.instagramIcon} alt="Instagram" className="w-6" />
-            </a>
-            <a href="#">
-              <img src={assets.facebookIcon} alt="Facebook" className="w-6" />
-            </a>
-            <a href="#">
-              <img src={assets.twitterIcon} alt="Twitter" className="w-6" />
-            </a>
-          </div>
         </div>
 
         {/* Contact Info */}
