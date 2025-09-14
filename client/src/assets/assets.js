@@ -7,10 +7,6 @@ import locationIcon from './locationIcon.svg'
 import starIconFilled from './starIconFilled.svg'
 import arrowIcon from './arrowIcon.svg'
 import starIconOutlined from './starIconOutlined.svg'
-import instagramIcon from './instagramIcon.svg'
-import facebookIcon from './facebookIcon.svg'
-import twitterIcon from './twitterIcon.svg'
-import linkendinIcon from './linkendinIcon.svg'
 import homeIcon from './homeIcon.svg'
 import closeIcon from './closeIcon.svg'
 import locationFilledIcon from './locationFilledIcon.svg'
@@ -19,12 +15,13 @@ import badgeIcon from './badgeIcon.svg'
 import menuIcon from './menuIcon.svg'
 import closeMenu from './closeMenu.svg'
 import guestsIcon from './guestsIcon.svg'
-import roomImg1 from './roomImg1.png'
-import roomImgIn from './roomImgIn.png'
-//import roomImgnew from './roomImgnew.jpg'
-import roomImg2 from './roomImg2.png'
-import roomImg3 from './roomImg3.png'
-import roomImg4 from './roomImg4.png'
+import roomImg1 from './roomImg1.webp'
+import roomImgIn from './roomImgIn.webp'
+import roomImgannex from './roomImgannex.webp'
+import roomfront from './roomfront.webp'
+import roomImgsingle from './roomImgsingle.webp'
+import roomImgfn from './roomImgfn.webp'
+import roomImg2 from './roomImg2.webp'
 import regImage from './regImage.png'
 import addIcon from "./addIcon.svg";
 import dashboardIcon from "./dashboardIcon.svg";
@@ -44,10 +41,6 @@ export const assets = {
     starIconFilled,
     arrowIcon,
     starIconOutlined,
-    instagramIcon,
-    facebookIcon,
-    twitterIcon,
-    linkendinIcon,
     closeIcon,
     homeIcon,
     locationFilledIcon,
@@ -75,10 +68,10 @@ export const cities = [
 
 // Testimonials Dummy Data
 export const testimonials = [
-    { id: 1, name: "Emma Rodriguez", address: "Barcelona, Spain", image: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=200", rating: 5, review: "My stay at Royal George Guesthouse was simply wonderful. The rooms are elegant, the staff is incredibly attentive, and I felt truly at home. I can’t wait to visit again!" },
+    { id: 1, name: "Nigel Connell", address: "Toronto, Canada", image: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=200", rating: 5, review: "My stay at Royal George Guesthouse was simply wonderful. The rooms are elegant, the staff is incredibly attentive, and I felt truly at home. I can’t wait to visit again!" },
     { id: 2, name: "Liam Johnson", address: "New York, USA", image: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=200", rating: 4, review: "Royal George Guesthouse exceeded my expectations. The booking process was smooth, the facilities were top-notch, and the hospitality was second to none. Highly recommended!" },
-    { id: 3, name: "Sophia Lee", address: "Seoul, South Korea", image: "https://images.unsplash.com/photo-1701615004837-40d8573b6652?q=80&w=200", rating: 5, review: "Amazing service! I always find my perfect luxury stay at Royal George Guesthouse. Their staff’s recommendations and personal touch make every visit memorable" },
-    { id: 4, name: "Oliver Smith", address: "London, UK", image: "https://images.unsplash.com/photo-1701615004837-40d8573b6652?q=80&w=200", rating: 5, review: "From the beautiful rooms to the delicious food, Royal George Guesthouse is a hidden gem. The warmth of the staff made my trip unforgettable. Definitely my go-to place in Ghana!" }
+    { id: 3, name: "Abigial Quacoe", address: "Accra, Ghana", image: "https://images.unsplash.com/photo-1622352589840-a44b8a947aa9?q=80&w=627&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", rating: 5, review: "Amazing service! I always find my perfect luxury stay at Royal George Guesthouse. Their staff’s recommendations and personal touch make every visit memorable" },
+    { id: 4, name: "Gloria Hinze", address: "London, UK", image: "https://images.unsplash.com/photo-1622352579597-f6c295b71ea3?q=80&w=1931&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", rating: 5, review: "From the beautiful rooms to the delicious food, Royal George Guesthouse is a hidden gem. The warmth of the staff made my trip unforgettable. Definitely my go-to place in Ghana!" }
 ];
 
 
@@ -131,7 +124,7 @@ export const roomsDummyData = [
         "hotel": ExecutiveData,
         "roomType": "DOUBLE DELUXE",
         "pricePerNight": 350,
-        "images": [roomImg1, roomImgIn],
+        "images": [roomImg1, roomImgIn,roomfront,roomImgannex],
         "isAvailable": true,
         "createdAt": "2025-04-10T06:26:04.013Z",
         "updatedAt": "2025-04-10T06:26:04.013Z",
@@ -142,7 +135,7 @@ export const roomsDummyData = [
         "hotel": StandardData,
         "roomType": "SINGLE STANDARD ROOM",
         "pricePerNight": 250,
-        "images": [roomImg2, roomImg3, roomImg4, roomImg1],
+        "images": [roomImg2, roomImgsingle, roomImgfn],
         "isAvailable": true,
         "createdAt": "2025-04-10T06:25:22.593Z",
         "updatedAt": "2025-04-10T06:25:22.593Z",
