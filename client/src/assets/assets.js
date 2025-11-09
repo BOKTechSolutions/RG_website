@@ -1,4 +1,3 @@
-
 import new_logo from './new_logo.png'
 import searchIcon from './searchIcon.svg'
 import userIcon from './userIcon.svg'
@@ -23,12 +22,43 @@ import roomImgsingle from './roomImgsingle.webp'
 import roomImgfn from './roomImgfn.webp'
 import roomImg2 from './roomImg2.webp'
 import regImage from './regImage.png'
-import addIcon from "./addIcon.svg";
 import dashboardIcon from "./dashboardIcon.svg";
 import listIcon from "./listIcon.svg";
 import uploadArea from "./uploadArea.svg";
 import totalBookingIcon from "./totalBookingIcon.svg";
 import totalRevenueIcon from "./totalRevenueIcon.svg";
+
+
+//Gallery
+import room1 from './gallery/roomImg1.webp';
+import room2 from './gallery/roomImg2.webp'; // corrected if needed
+import lobby from './gallery/roomImgannex.webp';
+import restaurant from './gallery/roomfront.webp';
+import pool from './gallery/roomImgsingle.webp';
+import conference from './gallery/2nd_compound.webp';
+import floor from './gallery/2nd_floor_wide.webp';
+import outside from './gallery/outside.webp';
+import full_block from './gallery/full_block.webp';
+import securitypost from './gallery/securitypost.webp';
+import reception2 from './gallery/reception2.webp';
+import carpark from './gallery/carpark.webp';
+import trip_1 from './gallery/Trip_1.webp';
+
+export const galleryImages = [
+  { id: 1, src: room1, caption: 'Luxury Suite' },
+  { id: 2, src: room2, caption: 'Deluxe Room' },
+  { id: 3, src: lobby, caption: 'Lobby Area' },
+  { id: 4, src: restaurant, caption: 'Restaurant View' },
+  { id: 5, src: pool, caption: 'Swimming Pool' },
+  { id: 6, src: conference, caption: 'Conference Hall' },
+  { id: 7, src: floor, caption: 'Second Floor Wide View' },
+  { id: 8, src: outside, caption: 'Outside View' },
+  { id: 9, src: full_block, caption: 'Full Block View' },
+  { id: 10, src: securitypost, caption: 'Security Post' },
+  { id: 11, src: reception2, caption: 'Reception Area' },
+  { id: 12, src: carpark, caption: 'carpark' },
+  {id: 13, src:trip_1, caption:'Trip_1'},
+];
 
 
 export const assets = {
@@ -49,7 +79,6 @@ export const assets = {
     closeMenu,
     guestsIcon,
     regImage,
-    addIcon,
     dashboardIcon,
     listIcon,
     uploadArea,
@@ -212,3 +241,6 @@ const BookIcon = ()=>(
 )
 
 */
+
+
+
