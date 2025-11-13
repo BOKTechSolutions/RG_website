@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import Footer from './components/Footer';
 import AllRooms from './pages/AllRooms';
 import Gallery from './pages/Gallery';
+import ContactUs from './pages/Contact';
 import About from "./pages/About";
 import RoomDetails from './pages/RoomDetails';
 import MyBookings from './pages/MyBookings';
@@ -26,6 +27,7 @@ const App = () => {
           <Route path='/my-bookings' element={<MyBookings/>}/>
           <Route path="/gallery" element={<Gallery />} /> 
           <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<ContactUs />} />
         </Routes>
       </div>
       <Footer/>
