@@ -27,12 +27,14 @@ import listIcon from "./listIcon.svg";
 import uploadArea from "./uploadArea.svg";
 import totalBookingIcon from "./totalBookingIcon.svg";
 import totalRevenueIcon from "./totalRevenueIcon.svg";
+import new_pic1 from "./new_pic1.webp";
 
 
 //Gallery
 import room1 from './gallery/roomImg1.webp';
 import room2 from './gallery/roomImg2.webp'; // corrected if needed
 import lobby from './gallery/roomImgannex.webp';
+import room3 from './gallery/room3.webp';
 import restaurant from './gallery/roomfront.webp';
 import pool from './gallery/roomImgsingle.webp';
 import conference from './gallery/2nd_compound.webp';
@@ -163,7 +165,7 @@ export const roomsDummyData = [
         "hotel": StandardData,
         "roomType": "SINGLE STANDARD ROOM",
         "pricePerNight": 250,
-        "images": [roomImg2, roomImgsingle, roomImgfn],
+        "images": [roomImg2, roomImgsingle, roomImgfn,new_pic1],
         "isAvailable": true,
         "createdAt": "2025-04-10T06:25:22.593Z",
         "updatedAt": "2025-04-10T06:25:22.593Z",
@@ -205,22 +207,6 @@ export const userBookingsDummyData = [
         "isPaid": false,
         "createdAt": "2025-04-10T06:41:45.873Z",
         "updatedAt": "2025-04-10T06:41:45.873Z",
-        "__v": 0
-    },
-    {
-        "_id": "67f76810994a731e97d3b8b4",
-        "user": userDummyData,
-        "room": roomsDummyData[3],
-        "hotel": StandardData,
-        "checkInDate": "2025-04-11T00:00:00.000Z",
-        "checkOutDate": "2025-04-12T00:00:00.000Z",
-        "totalPrice": 199,
-        "guests": 1,
-        "status": "pending",
-        "paymentMethod": "Pay At Hotel",
-        "isPaid": false,
-        "createdAt": "2025-04-10T06:41:20.501Z",
-        "updatedAt": "2025-04-10T06:41:20.501Z",
         "__v": 0
     }
 ]
