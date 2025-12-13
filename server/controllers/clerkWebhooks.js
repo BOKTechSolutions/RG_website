@@ -20,27 +20,29 @@ const clerkWebhooks = async (req, res) => {
         // Build user object
         const userData = {
             _id: data.id,
-            email: data.email_addresses?.[0]?.email_address,
-            username: `${data.first_name || ""} ${data.last_name || ""}`.trim(),
+            email: data.email_addresses[0].email_address,
+            username: data.first_name + " "+ data.last_name,
             image: data.image_url,
         };
 
         // Handle webhook event
         switch (type) {
-            case "user.created":
+            case "user.created":{
                 await User.create(userData);
                 break;
-
-            case "user.updated":
-                await User.findByIdAndUpdate(data.id, userData);
-                break;
-
-            case "user.deleted":
-                await User.findByIdAndDelete(data.id);
-                break;
+            }
+            case "user.updated":{
+                await User.findByIdAndUpdate(data.id ,userData);
+            break;
+            }
+            case "user.deleted":{
+                await User.findByIdAndDelete(data.id,);
+            break;
+            }
+            default:
+            break;
         }
-
-        res.json({ success: true ,message:"Webhook recieved"});
+        res.json({ success: true ,message:"Webhook recieved"})
     } catch (error) {
         console.error("Webhook Error:", error.message);
         res.json({ error: "Webhook processing failed" });
