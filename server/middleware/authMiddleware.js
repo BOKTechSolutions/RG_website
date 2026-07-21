@@ -3,15 +3,15 @@ import User from "../models/user.js";
 export const protect = async (req, res, next) => {
   try {
 
-    const { userId } = req.auth();
+    const { userId } = req.auth;
 
     console.log("Clerk User ID:", userId);
 
 
     if (!userId) {
       return res.status(401).json({
-        success:false,
-        message:"No Clerk authentication"
+        success: false,
+        message: "No Clerk authentication"
       });
     }
 
@@ -24,8 +24,8 @@ export const protect = async (req, res, next) => {
 
     if (!user) {
       return res.status(401).json({
-        success:false,
-        message:"User not found in database"
+        success: false,
+        message: "User not found in database"
       });
     }
 
