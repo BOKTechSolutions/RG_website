@@ -36,13 +36,14 @@ const app = express();
 app.use(
   cors({
     origin: [
-      "https://devroyalgeorgegh.netlify.app",
-      "http://localhost:5173"
+      "https://royalgeorgegh.com",
+      "https://www.royalgeorgegh.com", // if your domain uses www
+      "https://devroyalgeorgegh.netlify.app", // keep for your dev frontend if you still use it
+      "http://localhost:5173" // local development
     ],
     credentials: true,
   })
 );
-
 
 // ==============================
 // CLERK WEBHOOK
