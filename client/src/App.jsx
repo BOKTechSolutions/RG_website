@@ -14,7 +14,7 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
 import Sitemap from "./pages/Sitemap";
 import ScrollToTop from "./components/ScrollToTop";
-
+import PaymentSuccess from "./pages/PaymentSuccess";
 
 // 🔐 Dashboard imports
 import Layout from './pages/dashboard/Layout'
@@ -48,6 +48,7 @@ const App = () => {
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms" element={<TermsOfService />} />
           <Route path="/sitemap" element={<Sitemap />} />
+          <Route path="/payment-success" element={<PaymentSuccess />} />
           
           
 

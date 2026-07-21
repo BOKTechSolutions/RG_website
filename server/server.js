@@ -9,8 +9,13 @@ import roomRouter from "./routes/roomRoutes.js";
 import room1Router from "./routes/room1Routes.js";
 import bookingRouter from "./routes/bookingRoutes.js";
 import connectCloudinary from "./configs/cloudinary.js";
+import dns from 'dns';
 
 // connect database & cloudinary
+
+dns.setServers(['8.8.8.8', '1.1.1.1']);
+
+
 connectDB();
 connectCloudinary();
 
@@ -22,7 +27,12 @@ app.use(express.json());
 app.use(clerkMiddleware());
 
 // webhook route
-app.use("/api/clerk", clerkWebhooks);
+// Clerk webhook MUST come before express.json()
+app.use(
+  "/api/clerk",
+  express.raw({ type: "application/json" }),
+  clerkWebhooks
+);
 
 // test route
 app.get("/", (req, res) => res.send("API is working"));

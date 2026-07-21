@@ -5,7 +5,8 @@ import {
   createBooking,
   getOwnerBookings,
   getUserBookings,
-  stripePayment,
+  paystackPayment,
+  verifyPaystackPayment,
 } from "../controllers/bookingController.js";
 
 const bookingRouter = express.Router();
@@ -14,6 +15,9 @@ bookingRouter.post("/check-availability", checkAvailabilityAPI);
 bookingRouter.post("/book", protect, createBooking);
 bookingRouter.get("/user", protect, getUserBookings);
 bookingRouter.get("/room1", protect, getOwnerBookings);
-bookingRouter.post("/stripe-payment", protect, stripePayment);
+
+// Paystack
+bookingRouter.post("/paystack-payment", protect, paystackPayment);
+bookingRouter.get("/verify/:reference", protect, verifyPaystackPayment);
 
 export default bookingRouter;

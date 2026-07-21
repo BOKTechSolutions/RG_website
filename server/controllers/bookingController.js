@@ -2,7 +2,7 @@ import transporter from "../configs/nodemailer.js";
 import Booking from"../models/booking.js";
 import Room from "../models/room.js";
 import Room1 from "../models/room1.js";
-
+import axios from "axios";
 
 
 // ===============================
@@ -171,49 +171,100 @@ export const getOwnerBookings = async (req, res) => {
 
 
 // ===============================
-// ✅ STRIPE PAYMENT
+// PAYSTACK PAYMENT
 // ===============================
-export const stripePayment = async (req, res) => {
+export const paystackPayment = async (req, res) => {
   try {
-
     const { bookingId } = req.body;
 
     const booking = await Booking.findById(bookingId);
 
-    const room1Data = await Room1.findById(booking.room1).populate("room");
+    if (!booking) {
+      return res.json({
+        success: false,
+        message: "Booking not found",
+      });
+    }
 
-    const totalPrice = booking.totalPrice;
+    const room1Data = await Room1.findById(booking.room1);
 
-    const { origin } = req.headers;
-
-    const stripeInstance = new stripe(process.env.STRIPE_SECRET_KEY);
-
-    const line_items = [
+    const response = await axios.post(
+      "https://api.paystack.co/transaction/initialize",
       {
-        price_data: {
-          currency: "usd",
-          product_data: {
-            name: room1Data.roomType,
-          },
-          unit_amount: totalPrice * 100,
+        email: req.user.email,
+        amount: booking.totalPrice * 100, // pesewas
+        callback_url: `${process.env.CLIENT_URL}/payment-success`,
+        metadata: {
+          bookingId: booking._id,
+          roomType: room1Data.roomType,
         },
-        quantity: 1,
       },
-    ];
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
-    const session = await stripeInstance.checkout.sessions.create({
-      line_items,
-      mode: "payment",
-      success_url: `${origin}/loader/my-bookings`,
-      cancel_url: `${origin}/my-bookings`,
-      metadata: {
-        bookingId,
-      },
+    return res.json({
+      success: true,
+      authorization_url: response.data.data.authorization_url,
+    });
+  } catch (error) {
+    console.log(error.response?.data || error.message);
+
+    return res.json({
+      success: false,
+      message: "Unable to initialize payment",
+    });
+  }
+};
+
+// ===============================
+// VERIFY PAYSTACK PAYMENT
+// ===============================
+export const verifyPaystackPayment = async (req, res) => {
+  try {
+    const { reference } = req.params;
+
+    const response = await axios.get(
+      `https://api.paystack.co/transaction/verify/${reference}`,
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}`,
+        },
+      }
+    );
+
+    const payment = response.data.data;
+
+    if (payment.status === "success") {
+
+      const bookingId = payment.metadata.bookingId;
+
+      await Booking.findByIdAndUpdate(bookingId, {
+        isPaid: true,
+      });
+
+      return res.json({
+        success: true,
+        message: "Payment verified",
+      });
+    }
+
+    return res.json({
+      success: false,
+      message: "Payment not successful",
     });
 
-    res.json({ success: true, url: session.url });
-
   } catch (error) {
-    res.json({ success: false, message: "Payment Failed" });
+
+    console.log(error.response?.data || error.message);
+
+    return res.json({
+      success: false,
+      message: "Verification failed",
+    });
   }
 };
