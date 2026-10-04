@@ -1,3 +1,4 @@
+import fs from "fs";
 import Room from "../models/room.js";
 import Room1 from "../models/room1.js";
 import { v2 as cloudinary } from "cloudinary";
