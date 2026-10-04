@@ -14,7 +14,7 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
 import Sitemap from "./pages/Sitemap";
 import ScrollToTop from "./components/ScrollToTop";
-
+import PaymentSuccess from "./pages/PaymentSuccess";
 
 // 🔐 Hotel Owner Dashboard Imports
 import Layout from "./pages/hotelOwner/Layout";
@@ -70,13 +70,8 @@ const App = () => {
           <Route path="/terms" element={<TermsOfService />} />
 
           <Route path="/sitemap" element={<Sitemap />} />
-
-
-          {/* =========================
-              HOTEL OWNER DASHBOARD
-          ========================== */}
-
-          <Route path="/hotelOwner" element={<Layout />}>
+          
+          
 
             <Route index element={<Dashboard />} />
 

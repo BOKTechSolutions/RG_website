@@ -1,53 +1,223 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { roomsDummyData } from '../assets/assets'
+import { useAppContext } from '../context/AppContext'
+import toast from 'react-hot-toast'
 
 const RoomDetails = () => {
+
     const { id } = useParams()
+    const { axios, getToken, navigate } = useAppContext()
+
     const [room, setRoom] = useState(null)
     const [mainImage, setMainImage] = useState(null)
 
+    const [checkInDate, setCheckInDate] = useState('')
+    const [checkOutDate, setCheckOutDate] = useState('')
+    const [guests, setGuests] = useState(1)
+
+    const [isAvailable, setIsAvailable] = useState(false)
+
+
     useEffect(() => {
         const room = roomsDummyData.find(room => room._id === id)
-        room && setRoom(room)
-        room && setMainImage(room.images[0])
+
+        if(room){
+            setRoom(room)
+            setMainImage(room.images[0])
+        }
+
     }, [id])
 
+
+    // Check Availability
+    const checkAvailability = async () => {
+
+        try {
+
+            if(!checkInDate || !checkOutDate){
+                toast.error("Select check-in and check-out dates")
+                return
+            }
+
+
+            if(checkInDate >= checkOutDate){
+                toast.error("Check-out date must be after check-in date")
+                return
+            }
+
+
+            const {data} = await axios.post(
+                '/api/bookings/check-availability',
+                {
+                    room1:id,
+                    checkInDate,
+                    checkOutDate
+                }
+            )
+
+
+            if(data.success){
+
+                if(data.isAvailable){
+
+                    setIsAvailable(true)
+                    toast.success("Room is available")
+
+                }else{
+
+                    setIsAvailable(false)
+                    toast.error("Room is not available")
+
+                }
+
+            }else{
+
+                toast.error(data.message)
+
+            }
+
+
+        } catch(error){
+
+            toast.error(error.message)
+
+        }
+
+    }
+
+
+
+    // Booking
+    const onSubmitHandler = async(e)=>{
+
+        e.preventDefault()
+
+
+        try{
+
+
+            if(!isAvailable){
+
+                return checkAvailability()
+
+            }
+
+
+            const {data} = await axios.post(
+                '/api/bookings/book',
+                {
+                    room1:id,
+                    checkInDate,
+                    checkOutDate,
+                    guests,
+                    paymentMethod:"Pay At Hotel"
+                },
+                {
+                    headers:{
+                        Authorization:`Bearer ${await getToken()}`
+                    }
+                }
+            )
+
+
+            if(data.success){
+
+                toast.success(data.message)
+
+                navigate('/my-bookings')
+
+                window.scrollTo(0,0)
+
+            }else{
+
+                toast.error(data.message)
+
+            }
+
+        }catch(error){
+
+            toast.error(error.message)
+
+        }
+
+    }
+
+
     return room && (
+
         <div className='py-28 md:py-35 px-4 md:px-16 lg:px-24 xl:px-32'>
+
+
             {/* Room Header */}
+
             <div className='flex flex-col md:flex-row items-start md:items-center gap-2'>
+
                 <h1 className='text-3xl md:text-4xl font-playfair'>
+
                     {room.guesthouse?.name || room.hotel?.name}
-                    <span className='font-inter text'> ({room.roomType})</span>
+
+                    <span className='font-inter text-sm'>
+                        ({room.roomType})
+                    </span>
+
                 </h1>
+
             </div>
 
-            {/* Room Images */}
+
+
+            {/* Images */}
+
             <div className='flex flex-col lg:flex-row mt-6 gap-6'>
+
+
                 <div className='lg:w-1/2 w-full'>
+
                     <img
-                        src={mainImage}
-                        alt="Room Image"
-                        className='w-full rounded-xl shadow-lg object-cover'
+                    src={mainImage}
+                    alt="Room"
+                    className='w-full rounded-xl shadow-lg object-cover'
                     />
+
                 </div>
+
                 <div className='grid grid-cols-2 gap-4 lg:w-1/2 w-full'>
-                    {room?.images.length > 1 && room.images.map((image, index) => (
+
+                    {room.images.map((image,index)=>(
+
                         <img
-                            onClick={() => setMainImage(image)}
-                            key={index}
-                            src={image}
-                            alt="Room Image"
-                            className={`w-full rounded-xl shadow-md object-cover cursor-pointer ${mainImage === image ? 'outline outline-3 outline-orange-500' : ''}`}
+
+                        key={index}
+
+                        onClick={()=>setMainImage(image)}
+
+                        src={image}
+
+                        alt="Room"
+
+                        className={`w-full rounded-xl shadow-md cursor-pointer ${
+                            mainImage===image 
+                            ? "outline outline-3 outline-orange-500"
+                            :""
+                        }`}
+
                         />
+
                     ))}
+
+
                 </div>
+
+
             </div>
 
             {/* Room Highlights */}
+
             <div className='flex flex-col md:flex-row md:justify-between mt-10'>
+
                 <div className='flex flex-col'>
+
                     <h1 className='text-3xl md:text-4xl font-playfair mb-4'>Relax and Unwind</h1>
 
                     <p className='text-gray-700 text-base max-w-2xl mb-6'>
@@ -58,62 +228,106 @@ const RoomDetails = () => {
                         <strong>Check-in time:</strong> 12:00 hr <br />
                         <strong>Check-out time:</strong> 11:30 hr
                     </p>
+
                 </div>
 
                 {/* Room Price */}
                 <p className='text-2xl font-medium mt-6 md:mt-0'>
                     GH₵{room.pricePerNight}/night
                 </p>
+
             </div>
 
-            {/* Check-In / Check-Out Form */}
-            <form className='flex flex-col md:flex-row items-start md:items-center justify-between bg-white shadow-[0px_0px_20px_rgba(0,0,0,0.15)] p-6 rounded-xl mx-auto mt-16 max-w-6xl'>
-                <div className='flex flex-col flex-wrap md:flex-row items-start md:items-center gap-4 md:gap-10 text-gray-500'>
-                    <div className='flex flex-col'>
-                        <label htmlFor="checkInDate" className='font-medium'>Check-in</label>
-                        <input
-                            type="date"
-                            id='checkInDate'
-                            className='w-full rounded border border-gray-300 px-3 py-2 mt-1.5 outline-none'
-                            required
-                        />
-                    </div>
-                    <div className='w-px h-15 bg-gray-300/70 max-md:hidden'></div>
-                    <div className='flex flex-col'>
-                        <label htmlFor="checkOutDate" className='font-medium'>Check-out</label>
-                        <input
-                            type="date"
-                            id='checkOutDate'
-                            className='w-full rounded border border-gray-300 px-3 py-2 mt-1.5 outline-none'
-                            required
-                        />
-                    </div>
-                    <div className='w-px h-15 bg-gray-300/70 max-md:hidden'></div>
-                    <div className='flex flex-col'>
-                        <label htmlFor="guests" className='font-medium'>Guests</label>
-                        <input
-                            type="number"
-                            id='guests'
-                            placeholder='0'
-                            className='max-w-20 rounded border border-gray-300 px-3 py-2 mt-1.5 outline-none'
-                            required
-                        />
-                    </div>
+            {/* Booking Form */}
+            <form
+            onSubmit={onSubmitHandler}
+            className='flex flex-col md:flex-row items-start md:items-center justify-between bg-white shadow-xl p-6 rounded-xl mx-auto mt-16 max-w-6xl'
+            >
+
+
+            <div className='flex flex-wrap gap-5'>
+
+
+                <div>
+
+                <label>Check-in</label>
+
+                <input
+
+                type="date"
+
+                value={checkInDate}
+
+                onChange={(e)=>setCheckInDate(e.target.value)}
+
+                className='border p-2 block rounded'
+
+                required
+
+                />
+
                 </div>
-                <button
-                    type='submit'
-                    className='bg-primary hover:bg-primary-dull active:scale-95 transition-all text-white rounded-md max-md:w-full max-md:mt-6 md:px-25 py-3 md:py-4 text-base cursor-pointer'
-                >
-                   Check Availability 
-                </button>
+
+
+                <div>
+
+                <label>Check-out</label>
+
+                <input
+
+                type="date"
+
+                value={checkOutDate}
+
+                onChange={(e)=>setCheckOutDate(e.target.value)}
+
+                className='border p-2 block rounded'
+
+                required
+
+                />
+
+                </div>
+                <div>
+
+                <label>Guests</label>
+
+                <input
+
+                type="number"
+
+                value={guests}
+
+                min="1"
+
+                onChange={(e)=>setGuests(e.target.value)}
+
+                className='border p-2 block rounded w-20'
+
+                required
+
+                />
+
+                </div>
+            </div>
+            <button
+
+            type="submit"
+
+            className='bg-primary text-white rounded-md px-10 py-3 mt-5 md:mt-0'
+
+            >
+
+            {isAvailable ? "Book Now":"Check Availability"}
+            </button>
             </form>
             <div className='max-w-3xl border-y border-gray-300 my-15 py-10 text-gray-500'>
+
                 <p>
-                 We look forward to welcoming you for a relaxing stay at our guesthouse.
+                We look forward to welcoming you for a relaxing stay at our guesthouse.
                 </p>
             </div>
         </div>
     )
 }
-
 export default RoomDetails
