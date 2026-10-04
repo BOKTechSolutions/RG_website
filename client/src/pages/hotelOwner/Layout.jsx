@@ -1,34 +1,42 @@
-import React, { useEffect } from 'react'
-import Navbar from '../../components/hotelOwner/Navbar'
-import Sidebar from '../../components/hotelOwner/Sidebar'
-import { Outlet, useNavigate } from 'react-router-dom'
-import { useAppContext } from '../../context/AppContext'
+
+import React, { useEffect } from "react";
+import Navbar from "../../components/hotelOwner/Navbar";
+import Sidebar from "../../components/hotelOwner/Sidebar";
+import { Outlet, useNavigate } from "react-router-dom";
+import { useAppContext } from "../../context/AppContext";
 
 const Layout = () => {
+  const { isOwner } = useAppContext();
+  const navigate = useNavigate();
 
-    const { isOwner } = useAppContext()
-    const navigate = useNavigate()
+  useEffect(() => {
+    // Only hotel owners can access the dashboard
+    if (!isOwner) {
+      navigate("/", { replace: true });
+    }
+  }, [isOwner, navigate]);
 
-    useEffect(() => {
-        if (!isOwner) {
-            navigate('/')
-        }
-    }, [isOwner, navigate])
+  // Don't render the dashboard while checking access
+  if (!isOwner) {
+    return null;
+  }
 
-    return (
-        <div className='flex flex-col h-screen'>
-            <Navbar />
+  return (
+    <div className="flex flex-col h-screen overflow-hidden">
+      {/* Hotel Owner Navbar */}
+      <Navbar />
 
-            <div className='flex h-full'>
-                <Sidebar />
+      <div className="flex flex-1 min-h-0">
+        {/* Hotel Owner Sidebar */}
+        <Sidebar />
 
-                <div className='flex-1 p-4 pt-10 md:px-10 h-full'>
-                    <Outlet />
-                </div>
+        {/* Dashboard Content */}
+        <main className="flex-1 overflow-y-auto p-4 pt-10 md:px-10">
+          <Outlet />
+        </main>
+      </div>
+    </div>
+  );
+};
 
-            </div>
-        </div>
-    )
-}
-
-export default Layout
+export default Layout;
