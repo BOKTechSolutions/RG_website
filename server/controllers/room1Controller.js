@@ -76,15 +76,9 @@ export const createRoom1 = async (req, res) => {
 // ===============================
 export const getRoom1 = async (req, res) => {
     try {
-        const rooms = await Room1.find({ isAvailable: true })
-            .populate({
-                path: "room",
-                populate: {
-                    path: "owner",
-                    select: "image name email"
-                }
-            })
-            .sort({ createdAt: -1 });
+        const rooms = await Room1.find({
+            isAvailable: true
+        });
 
         return res.status(200).json({
             success: true,
@@ -93,13 +87,14 @@ export const getRoom1 = async (req, res) => {
         });
 
     } catch (error) {
+        console.error("GET ROOM1 ERROR:", error);
+
         return res.status(500).json({
             success: false,
             message: error.message
         });
     }
 };
-
 
 
 // ===============================
