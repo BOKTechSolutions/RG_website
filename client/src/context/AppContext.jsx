@@ -2,28 +2,32 @@ import { useAuth, useUser } from "@clerk/clerk-react";
 import { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
 import { assets } from "../assets/assets";
 
-// backend base URL
+// =========================
+// AXIOS BASE URL
+// =========================
 axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL;
 
+// =========================
+// CONTEXT
+// =========================
 const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
-
     const currency = import.meta.env.VITE_CURRENCY || "₵";
-    const navigate = useNavigate();
 
     const { user } = useUser();
     const { getToken } = useAuth();
 
-    const [isOwner, setIsOwner] = useState(false);
+    // =========================
+    // STATE
+    // =========================
+    const [isOwner, setIsOwner] = useState(null); // ✅ IMPORTANT FIX
+    const [loadingUser, setLoadingUser] = useState(true);
+
     const [showHotelReg, setShowHotelReg] = useState(false);
-
-    // ✅ NOW STORES ROOM1 DATA
     const [rooms, setRooms] = useState([]);
-
     const [searchedCities, setSearchedCities] = useState([]);
 
     // =========================
@@ -42,29 +46,40 @@ export const AppProvider = ({ children }) => {
     // =========================
     const fetchUser = async () => {
         try {
-            const { data } = await axios.get(
-                "/api/user",
-                {
-                    headers: {
-                        Authorization: `Bearer ${await getToken()}`
-                    }
+            setLoadingUser(true);
+
+            const token = await getToken();
+
+            if (!token) {
+                setIsOwner(false);
+                setLoadingUser(false);
+                return;
+            }
+
+            const { data } = await axios.get("/api/user", {
+                headers: {
+                    Authorization: `Bearer ${token}`
                 }
-            );
+            });
 
             if (data.success) {
                 setIsOwner(data.role === "hotelOwner");
                 setSearchedCities(data.recentSearchedCities || []);
             } else {
-                setTimeout(fetchUser, 2000);
+                setIsOwner(false);
+                toast.error(data.message || "Failed to load user");
             }
 
         } catch (error) {
-            toast.error(error.message);
+            setIsOwner(false);
+            toast.error(error.message || "User fetch error");
+        } finally {
+            setLoadingUser(false);
         }
     };
 
     // =========================
-    // FETCH ROOM1 (UPDATED)
+    // FETCH ROOMS
     // =========================
     const fetchRooms = async () => {
         try {
@@ -87,6 +102,9 @@ export const AppProvider = ({ children }) => {
     useEffect(() => {
         if (user) {
             fetchUser();
+        } else {
+            setIsOwner(false);
+            setLoadingUser(false);
         }
     }, [user]);
 
@@ -98,27 +116,28 @@ export const AppProvider = ({ children }) => {
     // CONTEXT VALUE
     // =========================
     const value = {
+        // config
         currency,
-        navigate,
 
+        // auth
         user,
         getToken,
-
         isOwner,
-        setIsOwner,
+        loadingUser,
 
-        axios,
-
+        // state
         showHotelReg,
         setShowHotelReg,
-
-        facilityIcons,
 
         rooms,
         setRooms,
 
         searchedCities,
-        setSearchedCities
+        setSearchedCities,
+
+        facilityIcons,
+
+        axios
     };
 
     return (
@@ -128,5 +147,15 @@ export const AppProvider = ({ children }) => {
     );
 };
 
-// custom hook
-export const useAppContext = () => useContext(AppContext);
+// =========================
+// HOOK
+// =========================
+export const useAppContext = () => {
+    const context = useContext(AppContext);
+
+    if (!context) {
+        throw new Error("useAppContext must be used within AppProvider");
+    }
+
+    return context;
+};

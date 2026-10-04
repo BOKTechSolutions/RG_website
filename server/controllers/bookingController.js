@@ -68,6 +68,12 @@ export const createBooking = async (req, res) => {
 
     // 🔍 Get room1 data
     const room1Data = await Room1.findById(room1).populate("room");
+    if (!room1Data) {
+       return res.status(404).json({
+       success: false,
+       message: "Room not found"
+    });
+}
 
     // price comes from room1 now
     let totalPrice = room1Data.pricePerNight;
